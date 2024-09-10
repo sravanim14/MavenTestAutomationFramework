@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Sample Test Suite">
+    <listeners>
+        <listener class-name="utils.SuiteListener"/>
+    </listeners>
+    <test name="Web Test">
+        <classes>
+            <class name="runners.WebRunner"/>
+        </classes>
+    </test>
+    <test name="Desktop Test">
+        <classes>
+            <!-- <class name="runners.DesktopRunner"/> -->
+        </classes>
+    </test>
+    <test name="Android Test">
+        <classes>
+           <!-- <class name="runners.AndroidRunner"/> -->
+        </classes>
+    </test>
+    <test name="Android Web Test">
+        <classes>
+            <!-- <class name="runners.AndroidWebRunner"/> -->
+        </classes>
+    </test>
+    <test name="API Test">
+        <classes>
+            <class name="runners.ApiRunner"/>
+        </classes>
+    </test>
+</suite>
