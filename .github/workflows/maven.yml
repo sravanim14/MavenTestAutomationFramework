@@ -16,7 +16,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -31,8 +30,11 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests=true
 
+    - name: List files in the Directory - target
+      run: ls -ltr target
+      
   publish:
-
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
