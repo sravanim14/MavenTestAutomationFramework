@@ -31,6 +31,11 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests=true
 
+  publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
     - name: Copy JAR to the Staging Directory
       run: mkdir -p staging && cp -r target/*.jar staging
 
