@@ -14,6 +14,14 @@ on:
   pull_request:
     branches: [ "main", "feature", "feature*" ]
 
+env:
+  WEBMEMBERSHIP: 1.0
+  PRODUCT: webmembership
+  RELEASE: $WEBMEMBERSHIP_RELEASE
+  BIN_FILE_TAR_ZIP: ${PRODUCT}_v$RELEASE.tar
+  BUILD_DIR: /web_build/Java11Upgrade/$PRODUCT
+  TARGET_DIR: ${PRODUCT}_v$RELEASE
+
 jobs:
   build_jar:
     runs-on: ubuntu-latest
@@ -42,7 +50,8 @@ jobs:
       with:
         name: my-artifact
         path: staging
-
+        retention-days: 1
+        
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
@@ -62,3 +71,71 @@ jobs:
 
     - name: List Artifacts
       run: ls -ltr staging
+
+    - name: Create Target Directory - $BUILD_DIR/$TARGET_DIR
+      run: |
+        mkdir -p $BUILD_DIR/$TARGET_DIR
+        chmod -R 666 $BUILD_DIR/$TARGET_DIR
+
+    - name: Copy JAR to the Target Directory - $BUILD_DIR/$TARGET_DIR
+      run: cp -r staging/*.jar $BUILD_DIR/$TARGET_DIR
+
+    #- name: Copy Build Scripts to the Target Directory - $BUILD_DIR/$TARGET_DIR
+    #  run: |
+    #    cp install-$PRODUCT.sh $BUILD_DIR/$TARGET_DIR
+    #    cp append_properties.sh $BUILD_DIR/$TARGET_DIR
+    #    cp jsonmerger.jar $BUILD_DIR/$TARGET_DIR
+
+    #- name: Copy Server Configs to the Target Directory - $BUILD_DIR/$TARGET_DIR
+    #  run: |
+    #    cp --preserve -f /etc/tomcat6/server.xml $BUILD_DIR/$TARGET_DIR
+    #    cp --preserve -f /etc/sysconfig/tomcat6 $BUILD_DIR/$TARGET_DIR
+
+    #- name: Copy version file to the Target Directory - $BUILD_DIR/$TARGET_DIR
+    #  run: |
+    #    cp --preserve -f /u/Java11Upgrade/$PRODUCT/bin/version.txt $BUILD_DIR/$TARGET_DIR
+    #    cp --preserve -f /u/Java11Upgrade/$PRODUCT/bin/${PRODUCT}_env $BUILD_DIR/$TARGET_DIR
+
+    #- name: Changing Permissions and File types in the Directory - /u
+    #  run: TO DO
+
+    #- name: Update ownership and permission of the product folder
+    #  run: |
+    #    cd /u/Java11Upgrade/$PRODUCT
+    #    chown s7000:s7000 * -R 
+    #    find ./ -type f -name '*.sh' -exec chmod +x {} \;
+
+    #- name: Archiving PRIME Membership files and copy product folder from /u to build target directory
+    #  run: |
+    #    rsync -av --exclude='.svn' /u/Java11Upgrade/$PRODUCT $BUILD_DIR/$TARGET_DIR
+
+    - name: remove data install (db_intall & db_update) from target directory
+      run: |
+        rm -rf $BUILD_DIR/$TARGET_DIR/$PRODUCT/install
+        rm -rf $BUILD_DIR/$TARGET_DIR/$PRODUCT/data
+        rm -f $BUILD_DIR/$TARGET_DIR/$PRODUCT/bin/version_oracle.sql
+        rm -f $BUILD_DIR/$TARGET_DIR/$PRODUCT/bin/upgrade_ora_${PRODUCT}_db.sh
+
+    - name: Setting permissions of the the Target Directory - $BUILD_DIR/$TARGET_DIR
+      run: |
+        chmod 644 $BUILD_DIR/$TARGET_DIR/*
+        chmod 755 $BUILD_DIR/$TARGET_DIR/*.sh
+        chmod 755 $BUILD_DIR/$TARGET_DIR/*.jar
+
+    - name: Create the tar file from the Target Directory - $BUILD_DIR/$TARGET_DIR
+      run: |
+        cd $BUILD_DIR
+        tar --exclude-vcs --transform 's,^,/tmp/,S' -cvf $BIN_FILE_TAR_ZIP $TARGET_DIR
+
+    - name: List TAR File created in the - $BUILD_DIR
+      run: ls -ltr $BUILD_DIR/$BIN_FILE_TAR_ZIP
+
+    - name: Delete the Target Directory - $BUILD_DIR/$TARGET_DIR
+      run: rm -rf $BUILD_DIR/$TARGET_DIR
+
+    - name: TAR File created and Uploaded 
+      uses: actions/upload-artifact@v4
+      with:
+        name: $BIN_FILE_TAR_ZIP
+        path: $BUILD_DIR/$BIN_FILE_TAR_ZIP
+        retention-days: 1
