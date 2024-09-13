@@ -56,10 +56,10 @@ jobs:
     needs: build_jar
     runs-on: ubuntu-latest
     env:
-      RELEASE: ${{ WEBMEMBERSHIP }}_RELEASE
-      BIN_FILE_TAR_ZIP: ${{ PRODUCT}}_v${{ RELEASE }}.tar
-      BUILD_DIR: /tmp/web_build/Java11Upgrade/${{ PRODUCT }}
-      TARGET_DIR: ${{ PRODUCT}}_v${{ RELEASE }}
+      RELEASE: ${{ env.WEBMEMBERSHIP }}_RELEASE
+      #BIN_FILE_TAR_ZIP: ${{ PRODUCT}}_v${{ RELEASE }}.tar
+      #BUILD_DIR: /tmp/web_build/Java11Upgrade/${{ PRODUCT }}
+      #TARGET_DIR: ${{ PRODUCT}}_v${{ RELEASE }}
     steps:
     - uses: actions/checkout@v4
 
@@ -75,9 +75,9 @@ jobs:
         echo "WEBMEMBERSHIP = $WEBMEMBERSHIP"
         echo "PRODUCT = $PRODUCT"
         echo "RELEASE = $RELEASE"
-        echo "BUILD_DIR = $BUILD_DIR"
-        echo "TARGET_DIR = $TARGET_DIR"
-        echo "BIN_FILE_TAR_ZIP = $BIN_FILE_TAR_ZIP"
+        #echo "BUILD_DIR = $BUILD_DIR"
+        #echo "TARGET_DIR = $TARGET_DIR"
+        #echo "BIN_FILE_TAR_ZIP = $BIN_FILE_TAR_ZIP"
      
     - name: Download Artifacts 
       uses: actions/download-artifact@v4
