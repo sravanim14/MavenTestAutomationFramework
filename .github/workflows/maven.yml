@@ -32,12 +32,7 @@ jobs:
 
     - name: List files in the Directory - target
       run: ls -ltr target
-      
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
 
-    steps:
     - name: Copy JAR to the Staging Directory
       run: mkdir -p staging && cp -r target/*.jar staging
 
