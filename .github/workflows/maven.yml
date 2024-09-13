@@ -41,7 +41,7 @@ jobs:
     - name: Copy JAR to the Staging Directory
       run: mkdir -p staging && cp -r target/*.jar staging
 
-    - name: Upload Artifacts 
+    - name: Upload JAR Artifacts 
       uses: actions/upload-artifact@v4
       with:
         name: my-artifact
@@ -151,10 +151,10 @@ jobs:
     - name: List the - $BUILD_DIR
       run: ls -ltr $BUILD_DIR
 
-    - name: Copy JAR to the Staging Directory
+    - name: Copy TAR to the Staging Directory
       run: mkdir -p staging && cp -r $BUILD_DIR/$BIN_FILE_TAR_ZIP staging
 
-    - name: TAR File created and Uploaded 
+    - name: Upload TAR File
       uses: actions/upload-artifact@v4
       with:
         name: my-tar
