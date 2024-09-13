@@ -134,7 +134,7 @@ jobs:
     - name: Setting permissions of the the Target Directory - $BUILD_DIR/$TARGET_DIR
       run: |
         chmod 644 $BUILD_DIR/$TARGET_DIR/*
-        chmod 755 $BUILD_DIR/$TARGET_DIR/*.sh
+        #chmod 755 $BUILD_DIR/$TARGET_DIR/*.sh
         chmod 755 $BUILD_DIR/$TARGET_DIR/*.jar
 
     - name: Create the tar file from the Target Directory - $BUILD_DIR/$TARGET_DIR
