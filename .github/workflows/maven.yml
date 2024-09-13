@@ -155,5 +155,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: my-tar
-        path: $BUILD_DIR/$BIN_FILE_TAR_ZIP
+        path: $BUILD_DIR
         retention-days: 1
