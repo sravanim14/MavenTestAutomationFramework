@@ -15,8 +15,8 @@ on:
     branches: [ "main", "feature", "feature*" ]
 
 env:
-  WEBMEMBERSHIP: 1.0
-  PRODUCT: webmembership
+  WEBMEMBERSHIP: "1.0"
+  PRODUCT: "webmembership"
 
 jobs:
   build_jar:
@@ -55,11 +55,7 @@ jobs:
   build_exe:
     needs: build_jar
     runs-on: ubuntu-latest
-    env:
-      RELEASE: ${{ env.WEBMEMBERSHIP }}_RELEASE
-      #BIN_FILE_TAR_ZIP: ${{ PRODUCT}}_v${{ RELEASE }}.tar
-      #BUILD_DIR: /tmp/web_build/Java11Upgrade/${{ PRODUCT }}
-      #TARGET_DIR: ${{ PRODUCT}}_v${{ RELEASE }}
+    
     steps:
     - uses: actions/checkout@v4
 
@@ -74,7 +70,7 @@ jobs:
       run: |
         echo "WEBMEMBERSHIP = $WEBMEMBERSHIP"
         echo "PRODUCT = $PRODUCT"
-        echo "RELEASE = $RELEASE"
+        #echo "RELEASE = $RELEASE"
         #echo "BUILD_DIR = $BUILD_DIR"
         #echo "TARGET_DIR = $TARGET_DIR"
         #echo "BIN_FILE_TAR_ZIP = $BIN_FILE_TAR_ZIP"
