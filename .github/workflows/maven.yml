@@ -17,10 +17,6 @@ on:
 env:
   WEBMEMBERSHIP: 1.0
   PRODUCT: webmembership
-  RELEASE: $WEBMEMBERSHIP_RELEASE
-  BIN_FILE_TAR_ZIP: ${PRODUCT}_v$RELEASE.tar
-  BUILD_DIR: /tmp/web_build/Java11Upgrade/$PRODUCT
-  TARGET_DIR: ${PRODUCT}_v$RELEASE
 
 jobs:
   build_jar:
@@ -59,10 +55,30 @@ jobs:
   build_exe:
     needs: build_jar
     runs-on: ubuntu-latest
-
+    env:
+      RELEASE: $WEBMEMBERSHIP_RELEASE
+      BIN_FILE_TAR_ZIP: $PRODUCT_v$RELEASE.tar
+      BUILD_DIR: /tmp/web_build/Java11Upgrade/$PRODUCT
+      TARGET_DIR: $PRODUCT_v$RELEASE
     steps:
     - uses: actions/checkout@v4
-    
+
+    - name: Set ENV Variables
+      run: |
+        echo "RELEASE=$WEBMEMBERSHIP_RELEASE" >> $GITHUB_ENV
+        echo "BIN_FILE_TAR_ZIP=$PRODUCT_v$RELEASE.tar" >> $GITHUB_ENV
+        echo "BUILD_DIR=/tmp/web_build/Java11Upgrade/$PRODUCT" >> $GITHUB_ENV
+        echo "TARGET_DIR=$PRODUCT_v$RELEASE" >> $GITHUB_ENV
+
+    -name: Print ENV Variables
+     run: |
+       echo "WEBMEMBERSHIP = $WEBMEMBERSHIP"
+       echo "PRODUCT = $PRODUCT"
+       echo "RELEASE = $RELEASE"
+       echo "BUILD_DIR = $BUILD_DIR"
+       echo "TARGET_DIR = $TARGET_DIR"
+       echo "BIN_FILE_TAR_ZIP = $BIN_FILE_TAR_ZIP"
+     
     - name: Download Artifacts 
       uses: actions/download-artifact@v4
       with:
