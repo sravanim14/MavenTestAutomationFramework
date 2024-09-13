@@ -142,11 +142,14 @@ jobs:
         cd $BUILD_DIR
         tar --exclude-vcs --transform 's,^,/tmp/,S' -cvf $BIN_FILE_TAR_ZIP $TARGET_DIR
 
+    - name: List the - $BUILD_DIR
+      run: ls -ltr $BUILD_DIR
+
     - name: List TAR File created in the - $BUILD_DIR
       run: ls -ltr $BUILD_DIR/$BIN_FILE_TAR_ZIP
 
-    - name: Delete the Target Directory - $BUILD_DIR/$TARGET_DIR
-      run: rm -rf $BUILD_DIR/$TARGET_DIR
+    #- name: Delete the Target Directory - $BUILD_DIR/$TARGET_DIR
+    #  run: rm -rf $BUILD_DIR/$TARGET_DIR
 
     - name: TAR File created and Uploaded 
       uses: actions/upload-artifact@v4
