@@ -61,8 +61,7 @@ jobs:
 
     - name: Set ENV Variables
       run: |
-        RELEASE="$WEBMEMBERSHIP_RELEASE"
-        echo "RELEASE=$RELEASE" >> $GITHUB_ENV
+        echo "RELEASE=${WEBMEMBERSHIP}_RELEASE" >> $GITHUB_ENV
 
     #- name: Set ENV Variables
     #  run: |
