@@ -70,14 +70,14 @@ jobs:
         echo "BUILD_DIR=/tmp/web_build/Java11Upgrade/$PRODUCT" >> $GITHUB_ENV
         echo "TARGET_DIR=$PRODUCT_v$RELEASE" >> $GITHUB_ENV
 
-    -name: Print ENV Variables
-     run: |
-       echo "WEBMEMBERSHIP = $WEBMEMBERSHIP"
-       echo "PRODUCT = $PRODUCT"
-       echo "RELEASE = $RELEASE"
-       echo "BUILD_DIR = $BUILD_DIR"
-       echo "TARGET_DIR = $TARGET_DIR"
-       echo "BIN_FILE_TAR_ZIP = $BIN_FILE_TAR_ZIP"
+    - name: Print ENV Variables
+      run: |
+        echo "WEBMEMBERSHIP = $WEBMEMBERSHIP"
+        echo "PRODUCT = $PRODUCT"
+        echo "RELEASE = $RELEASE"
+        echo "BUILD_DIR = $BUILD_DIR"
+        echo "TARGET_DIR = $TARGET_DIR"
+        echo "BIN_FILE_TAR_ZIP = $BIN_FILE_TAR_ZIP"
      
     - name: Download Artifacts 
       uses: actions/download-artifact@v4
