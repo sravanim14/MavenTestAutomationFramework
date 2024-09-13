@@ -19,7 +19,7 @@ env:
   PRODUCT: webmembership
   RELEASE: $WEBMEMBERSHIP_RELEASE
   BIN_FILE_TAR_ZIP: ${PRODUCT}_v$RELEASE.tar
-  BUILD_DIR: /web_build/Java11Upgrade/$PRODUCT
+  BUILD_DIR: /tmp/web_build/Java11Upgrade/$PRODUCT
   TARGET_DIR: ${PRODUCT}_v$RELEASE
 
 jobs:
