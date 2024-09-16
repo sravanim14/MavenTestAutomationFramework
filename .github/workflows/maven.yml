@@ -52,3 +52,38 @@ jobs:
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+
+  build_exe:
+    needs: build_jar
+    runs-on: Windows
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set ENV Variables
+      run: |
+        echo "RELEASE=${WEBMEMBERSHIP}_RELEASE" >> $GITHUB_ENV
+        echo "BUILD_DIR=/tmp/web_build/Java11Upgrade/${PRODUCT}" >> $GITHUB_ENV
+
+    - name: Set ENV Variables
+      run: |
+        echo "BIN_FILE_TAR_ZIP=${PRODUCT}_v${RELEASE}.tar" >> $GITHUB_ENV
+        echo "TARGET_DIR=${PRODUCT}_v${RELEASE}" >> $GITHUB_ENV
+        
+    - name: Print ENV Variables
+      run: |
+        echo "WEBMEMBERSHIP = $WEBMEMBERSHIP"
+        echo "PRODUCT = $PRODUCT"
+        echo "RELEASE = $RELEASE"
+        echo "BUILD_DIR = $BUILD_DIR"
+        echo "TARGET_DIR = $TARGET_DIR"
+        echo "BIN_FILE_TAR_ZIP = $BIN_FILE_TAR_ZIP"
+     
+    - name: Download Artifacts 
+      uses: actions/download-artifact@v4
+      with:
+        name: my-artifact
+        path: staging
+
+    - name: List Artifacts
+      run: ls -ltr staging
