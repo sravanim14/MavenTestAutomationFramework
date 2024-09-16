@@ -1,3 +1,4 @@
+
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
@@ -87,3 +88,11 @@ jobs:
 
     - name: List Artifacts
       run: dir staging
+
+    - name: Create Target Directory - $env:BUILD_DIR/$env:TARGET_DIR
+      run: |
+        New-Item -type Directory -name $env:BUILD_DIR/$env:TARGET_DIR
+        #chmod -R 777 $env:BUILD_DIR/$env:TARGET_DIR
+
+    - name: Copy JAR to the Target Directory - $env:BUILD_DIR/$env:TARGET_DIR
+      run: Copy-Item -Path "staging/*.jar" -Destination $env:BUILD_DIR/$env:TARGET_DIR
