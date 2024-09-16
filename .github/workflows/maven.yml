@@ -61,17 +61,14 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set ENV Variables
-      #run: |
-      #  echo "RELEASE=${WEBMEMBERSHIP}_RELEASE" >> $GITHUB_ENV
-      #  echo "BUILD_DIR=/tmp/web_build/Java11Upgrade/${PRODUCT}" >> $GITHUB_ENV
       run: |
-        echo "RELEASE=${env:WEBMEMBERSHIP}_RELEASE" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        echo "BUILD_DIR=/tmp/web_build/Java11Upgrade/${env:PRODUCT}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        Write-Output "RELEASE=${env:WEBMEMBERSHIP}_RELEASE" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        Write-Output "BUILD_DIR=/tmp/web_build/Java11Upgrade/${env:PRODUCT}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
     
-    #- name: Set ENV Variables
-    #  run: |
-    #    echo "BIN_FILE_TAR_ZIP=${PRODUCT}_v${RELEASE}.tar" >> $GITHUB_ENV
-    #    echo "TARGET_DIR=${PRODUCT}_v${RELEASE}" >> $GITHUB_ENV
+    - name: Set ENV Variables
+      run: |
+        Write-Output "BIN_FILE_TAR_ZIP=${env:PRODUCT}_v${env:RELEASE}.tar" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        Write-Output "TARGET_DIR=${env:PRODUCT}_v${env:RELEASE}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         
     - name: Print ENV Variables
       run: |
