@@ -86,4 +86,4 @@ jobs:
         path: staging
 
     - name: List Artifacts
-      run: ls -ltr staging
+      run: dir staging
