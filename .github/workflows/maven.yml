@@ -30,7 +30,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '11'
-        distribution: 'x64'
+        distribution: 'microsoft'
         cache: maven
         
     - name: Build with Maven
