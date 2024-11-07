@@ -103,4 +103,4 @@ jobs:
 
     - name: Get Folder Permissions
       shell: bash
-      run: ​chmod -R 777 "$env:BUILD_DIR/$env:TARGET_DIR"
+      run: ​${GITHUB_ACTION_PATH//\\//}chmod -R 777 "$env:BUILD_DIR/$env:TARGET_DIR"
