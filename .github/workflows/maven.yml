@@ -94,5 +94,8 @@ jobs:
         New-Item -type Directory -name "$env:BUILD_DIR/$env:TARGET_DIR"
         #chmod -R 777 $env:BUILD_DIR/$env:TARGET_DIR
 
-    - name: Copy JAR to the Target Directory - $env:BUILD_DIR/$env:TARGET_DIR
-      run: Copy-Item -Path "staging/*.jar" -Destination $env:BUILD_DIR/$env:TARGET_DIR
+    - name: Copy JAR to the Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
+      run: Copy-Item -Path "staging/*.jar" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
+
+    - name: Get Folder Permissions
+      run: ​Get-ACL -Path "$env:BUILD_DIR/$env:TARGET_DIR"
