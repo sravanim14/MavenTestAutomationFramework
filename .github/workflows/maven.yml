@@ -97,6 +97,10 @@ jobs:
     - name: Copy JAR to the Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
       run: Copy-Item -Path "staging/*.jar" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
 
+    #- name: Get Folder Permissions
+    #  shell: powershell
+    #  run: ​Get-ACL -Path "$env:BUILD_DIR/$env:TARGET_DIR"
+
     - name: Get Folder Permissions
-      shell: powershell
-      run: ​Get-ACL -Path "$env:BUILD_DIR/$env:TARGET_DIR"
+      shell: bash
+      run: ​chmod -R 777 "$env:BUILD_DIR/$env:TARGET_DIR"
