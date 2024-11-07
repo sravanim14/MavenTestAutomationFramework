@@ -64,7 +64,7 @@ jobs:
     - name: Set ENV Variables
       run: |
         Write-Output "RELEASE=${env:WEBMEMBERSHIP}_RELEASE" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        Write-Output "BUILD_DIR=C:/tmp/web_build/Java11Upgrade/${env:PRODUCT}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        Write-Output "BUILD_DIR=tmp/web_build/Java11Upgrade/${env:PRODUCT}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
     
     - name: Set ENV Variables
       run: |
