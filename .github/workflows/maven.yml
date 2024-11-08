@@ -124,13 +124,48 @@ jobs:
     #     Copy-Item -Path "API/Server/bin/version.txt" -Destination "$env:BUILD_DIR/$env:TARGET_DIR" -Force -Recurse
     #     Copy-Item -Path "API/Server/bin/${env:PRODUCT}_env" -Destination "$env:BUILD_DIR/$env:TARGET_DIR" -Force -Recurse
 
-    - name: Set Folder Permissions
+    - name: Set File Permissions in the Target Directory - [chmod 644 $targetdir/*]
       shell: powershell
       run:  | 
-        $acl = Get-Acl "$env:BUILD_DIR/$env:TARGET_DIR"
-        $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("Everyone", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
-        $acl.SetAccessRule($accessRule)
-        Set-Acl -Path "$env:BUILD_DIR/$env:TARGET_DIR" -AclObject $acl
+        $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*"
+        foreach ($file in $files) {
+          $acl = Get-Acl $file.FullName
+          $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "Allow")
+          $acl.SetAccessRule($rule)
+          Set-Acl -Path $file.FullName -AclObject $acl
+        }
+
+    - name: List Folder
+      run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
+
+    - name: Set File Permissions in the Target Directory - [chmod 755 $targetdir/*.sh]
+      shell: powershell
+      run:  | 
+        $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*.sh"
+        foreach ($file in $files) {
+          $acl = Get-Acl -Path $file.FullName
+          $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("Everyone", "ReadAndExecute", "Allow")
+          $ownerRule = New-Object System.Security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "Allow")
+          $acl.SetAccessRule($accessRule)
+          $acl.SetAccessRule($ownerRule)
+          Set-Acl -Path $file.FullName -AclObject $acl
+        }
+
+    - name: List Folder
+      run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
+
+    - name: Set File Permissions in the Target Directory - [chmod 755 $targetdir/*.jar]
+      shell: powershell
+      run:  | 
+        $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*.jar"
+        foreach ($file in $files) {
+          $acl = Get-Acl -Path $file.FullName
+          $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("Everyone", "ReadAndExecute", "Allow")
+          $ownerRule = New-Object System.Security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "Allow")
+          $acl.SetAccessRule($accessRule)
+          $acl.SetAccessRule($ownerRule)
+          Set-Acl -Path $file.FullName -AclObject $acl
+        }
 
     - name: List Folder
       run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
