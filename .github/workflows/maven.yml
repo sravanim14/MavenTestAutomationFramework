@@ -176,3 +176,16 @@ jobs:
           Write-Output "File: $($file.FullName)"
           Get-Acl -Path $file.FullName | Format-List
         }
+
+    - name: Compress action step
+      uses: a7ul/tar-action@v1.1.0
+      id: compress
+      with:
+        command: c
+        cwd: ./"$env:BUILD_DIR"
+        files: |
+          ./"$env:TARGET_DIR"
+        outPath: $env:BIN_FILE_TAR_ZIP
+
+    - name: List Artifacts
+      run: dir "$env:BUILD_DIR/$env:BIN_FILE_TAR_ZIP"
