@@ -98,6 +98,18 @@ jobs:
     - name: Copy JAR to the Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
       run: Copy-Item -Path "staging/*.jar" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
 
+    - name: Create .sh Files
+      run: |
+        cd $env:BUILD_DIR/$env:TARGET_DIR
+        New-Item -type File -name "sample.sh"
+        New-Item -type File -name "new.sh"
+        cd ..
+
+    - name: Create JAR Files
+      run: |
+        Copy-Item -Path "staging/*.jar" -Destination "$env:BUILD_DIR/$env:TARGET_DIR/test.jar"
+        Copy-Item -Path "staging/*.jar" -Destination "$env:BUILD_DIR/$env:TARGET_DIR/hello.jar"
+
     # - name: Copy Build Scripts to the Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
     #   run: |
     #     Copy-Item -Path "API/build_script/install-$env:PRODUCT.sh" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
