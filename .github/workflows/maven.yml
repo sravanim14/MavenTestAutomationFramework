@@ -124,7 +124,7 @@ jobs:
     #     Copy-Item -Path "API/Server/bin/version.txt" -Destination "$env:BUILD_DIR/$env:TARGET_DIR" -Force -Recurse
     #     Copy-Item -Path "API/Server/bin/${env:PRODUCT}_env" -Destination "$env:BUILD_DIR/$env:TARGET_DIR" -Force -Recurse
 
-    - name: Set File Permissions in the Target Directory - [chmod 644 $targetdir/*]
+    - name: Set All File Permissions in the Target Directory - [chmod 644 $targetdir/*]
       shell: powershell
       run:  | 
         $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*"
@@ -135,10 +135,7 @@ jobs:
           Set-Acl -Path $file.FullName -AclObject $acl
         }
 
-    - name: List Folder
-      run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
-
-    - name: Set File Permissions in the Target Directory - [chmod 755 $targetdir/*.sh]
+    - name: Set .sh File Permissions in the Target Directory - [chmod 755 $targetdir/*.sh]
       shell: powershell
       run:  | 
         $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*.sh"
@@ -151,10 +148,7 @@ jobs:
           Set-Acl -Path $file.FullName -AclObject $acl
         }
 
-    - name: List Folder
-      run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
-
-    - name: Set File Permissions in the Target Directory - [chmod 755 $targetdir/*.jar]
+    - name: Set .jar File Permissions in the Target Directory - [chmod 755 $targetdir/*.jar]
       shell: powershell
       run:  | 
         $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*.jar"
@@ -167,5 +161,8 @@ jobs:
           Set-Acl -Path $file.FullName -AclObject $acl
         }
 
-    - name: List Folder
-      run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
+    - name: List .sh Files
+      run: Get-Acl -Path "$env:BUILD_DIR/$env:TARGET_DIR"\*.sh | Format-List
+
+    - name: List .jar Files
+      run: Get-Acl -Path "$env:BUILD_DIR/$env:TARGET_DIR"\*.jar | Format-List
