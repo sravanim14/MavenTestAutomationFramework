@@ -162,7 +162,13 @@ jobs:
         }
 
     - name: List .sh Files
-      run: Start-Process powershell 'Get-Acl -Path "$env:BUILD_DIR\$env:TARGET_DIR\*.sh" | Format-List' -Verb "RunAs"
+      run: |
+        $tmp = [System.IO.Path]::GetTempFileName()
+        Start-Process powershell 'Get-Acl -Path "$env:BUILD_DIR\$env:TARGET_DIR\*.sh" | Format-List' -Verb "RunAs" -RedirectStandardOutput $tmp
+        get-content $tmp
 
     - name: List .jar Files
-      run: Start-Process powershell 'Get-Acl -Path "$env:BUILD_DIR\$env:TARGET_DIR\*.jar" | Format-List' -Verb "RunAs"
+      run: |
+        $tmp = [System.IO.Path]::GetTempFileName()
+        Start-Process powershell 'Get-Acl -Path "$env:BUILD_DIR\$env:TARGET_DIR\*.jar" | Format-List' -Verb "RunAs" -RedirectStandardOutput $tmp
+        get-content $tmp
