@@ -163,12 +163,16 @@ jobs:
 
     - name: List .sh Files
       run: |
-        $tmp = [System.IO.Path]::GetTempFileName()
-        Start-Process powershell 'Get-Acl -Path "$env:BUILD_DIR\$env:TARGET_DIR\*.sh" | Format-List' -Verb "RunAs" -RedirectStandardOutput $tmp
-        get-content $tmp
+        $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*.sh"
+        foreach ($file in $files) {
+          Write-Output "File: $($file.FullName)"
+          Get-Acl -Path $file.FullName | Format-List
+        }
 
     - name: List .jar Files
       run: |
-        $tmp = [System.IO.Path]::GetTempFileName()
-        Start-Process powershell 'Get-Acl -Path "$env:BUILD_DIR\$env:TARGET_DIR\*.jar" | Format-List' -Verb "RunAs" -RedirectStandardOutput $tmp
-        get-content $tmp
+        $files = Get-ChildItem -Path "$env:BUILD_DIR/$env:TARGET_DIR" -Filter "*.jar"
+        foreach ($file in $files) {
+          Write-Output "File: $($file.FullName)"
+          Get-Acl -Path $file.FullName | Format-List
+        }
