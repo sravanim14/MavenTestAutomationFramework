@@ -91,17 +91,34 @@ jobs:
 
     - name: Create Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
       run: |
-        New-Item -type Directory -name "$env:BUILD_DIR/$env:TARGET_DIR"
-        #chmod -R 777 $env:BUILD_DIR/$env:TARGET_DIR
+        If (!(Test-Path "$env:BUILD_DIR/$env:TARGET_DIR")) {
+          New-Item -type Directory -name "$env:BUILD_DIR/$env:TARGET_DIR"
+        }
 
     - name: Copy JAR to the Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
       run: Copy-Item -Path "staging/*.jar" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
 
-    - name: Get Folder Permissions
-      shell: powershell
-      run: $PSVersionTable
-    #  run: ​Get-ACL -Path "$env:BUILD_DIR/$env:TARGET_DIR"
+    # - name: Copy Build Scripts to the Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
+    #   run: |
+    #     Copy-Item -Path "API/build_script/install-$env:PRODUCT.sh" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
+    #     Copy-Item -Path "API/build_script/append_properties.sh" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
+    #     Copy-Item -Path "API/build_script/jsonmerger.jar" -Destination "$env:BUILD_DIR/$env:TARGET_DIR"
 
-    - name: Get Folder Permissions
-      shell: bash
-      run: ​${GITHUB_ACTION_PATH//\\//}chmod -R 777 "$env:BUILD_DIR/$env:TARGET_DIR"
+    # - name: List Artifacts
+    #   run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
+
+    # - name: Copy version file to the Target Directory - "$env:BUILD_DIR/$env:TARGET_DIR"
+    #   run: |
+    #     Copy-Item -Path "API/Server/bin/version.txt" -Destination "$env:BUILD_DIR/$env:TARGET_DIR" -Force -Recurse
+    #     Copy-Item -Path "API/Server/bin/${env:PRODUCT}_env" -Destination "$env:BUILD_DIR/$env:TARGET_DIR" -Force -Recurse
+
+    - name: Set Folder Permissions
+      shell: powershell
+      run:  | 
+        $acl = Get-Acl "$env:BUILD_DIR/$env:TARGET_DIR"
+        $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("Everyone", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
+        $acl.SetAccessRule($accessRule)
+        Set-Acl -Path "$env:BUILD_DIR/$env:TARGET_DIR" -AclObject $acl
+
+    - name: List Folder
+      run: dir "$env:BUILD_DIR/$env:TARGET_DIR"
