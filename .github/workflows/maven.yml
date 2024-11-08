@@ -182,10 +182,10 @@ jobs:
       id: compress
       with:
         command: c
-        cwd: ./"$env:BUILD_DIR"
+        cwd: ./"$BUILD_DIR"
         files: |
-          ./"$env:TARGET_DIR"
-        outPath: $env:BIN_FILE_TAR_ZIP
+          ./"$TARGET_DIR"
+        outPath: $BIN_FILE_TAR_ZIP
 
     - name: List Artifacts
       run: dir "$env:BUILD_DIR/$env:BIN_FILE_TAR_ZIP"
